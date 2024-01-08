@@ -2,6 +2,7 @@ import { mainBank } from "./banks.js";
 import { mainConverter } from "./converter.js";
 import { mainFinance } from "./financeManagment.js";
 import { mainShipping } from "./shipping.js";
+import { mainUniversity } from "./universitySystem.js";
 
 
 // General functions
@@ -16,7 +17,8 @@ const main = () => {
     // mainBank();
     // mainFinance();
     // mainShipping()
-    mainConverter();
+    // mainConverter();
+    mainUniversity();
 }
 
 main();
