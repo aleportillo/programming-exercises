@@ -1,4 +1,5 @@
 import { mainBank } from "./banks.js";
+import { mainFinance } from "./financeManagment.js";
 
 
 // General functions
@@ -9,7 +10,8 @@ export const sleep = (ms) => {
 // Init project
 
 const main = () => {
-    mainBank();
+    // mainBank();
+    mainFinance();
 }
 
 main();
