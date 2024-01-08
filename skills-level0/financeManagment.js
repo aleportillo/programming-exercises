@@ -114,7 +114,7 @@ const financeMenu = async () => {
         case 'addIncome': addIncome(); break;
         case 'addExpenses': addExpenses(); break;
         case 'viewBalance': viewBalance(); break;
-        default: p.cancel('La opción seleccionada no está disponible'); bankMenu(); break;
+        default: p.cancel('La opción seleccionada no está disponible'); financeMenu(); break;
     }
 }
 
