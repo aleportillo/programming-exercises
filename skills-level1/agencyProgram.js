@@ -84,27 +84,50 @@ export const mainTravel = async () => {
 
 const travelMenu = async () => {
     
-    let userBudget = Number(await p.text({
+    let userBudget = await p.text({
         message: 'Cual es tu presupuesto para viajar',
         validate(value) {
             if (!value) return `Debes ingresar un dato`;
             if (isNaN(value)) return `Debes ingresar un numero`;
         } 
-    }));
+    });
     
+    userBudget = Number(userBudget);
+
     let season;
 
     if(userBudget >= 100 && userBudget < 200){
         season = travelDestinations[0];
-    } else {
+    } else if(userBudget > 100) {
         const availableSeasons = travelDestinations
             .filter(season => userBudget >= season.cost )
-            .map(season => { return { ...season, label: season.season, value: season}});    
+            .map(season => { return { 
+                ...season, 
+                label: season.season, 
+                value: season
+            }});    
         
         season = await p.select({
             message: 'Varias temporadas se ajustan a su presupuesto.\nSeleccionse su favorita.',
             options: availableSeasons,
         });
+    } else {
+        p.note('Lo siento, no te alcanza para ningun viaje', 'RESULTADO');
+        const nextAction = await p.select({
+            message: 'Que desea hacer',
+            options: [
+             { label: 'Elegir otro lugar', value: true},   
+             { label: 'Salir', value: false}   
+            ]
+        });
+        
+        if(nextAction){
+            travelMenu();
+            return;
+        }
+        
+        logout();
+        return;
     }
     
     const result = await activities(season.destinations);
