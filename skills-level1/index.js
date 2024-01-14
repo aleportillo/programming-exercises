@@ -1,4 +1,5 @@
 import { mainPlayer } from "./playerReview.js";
+import { mainTravel } from "./agencyProgram.js";
 
 // General functions
 export const sleep = (ms) => {
@@ -8,7 +9,8 @@ export const sleep = (ms) => {
 // Init project
 
 const main = () => {
-    mainPlayer();
+    // mainPlayer();
+    mainTravel();
 }
 
 main();
