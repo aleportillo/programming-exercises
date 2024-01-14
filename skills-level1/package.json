@@ -1,0 +1,17 @@
+{
+  "type": "module",
+  "name": "skills-level1",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start-watch": "node --watch index.js"
+  },
+  "dependencies": {
+    "@clack/prompts": "^0.7.0",
+    "picocolors": "^1.0.0"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
