@@ -18,4 +18,5 @@ https://github.com/blindma1den/Programming-Skills-Level1
 🍄 **Level 1:** entry level [exercises](https://github.com/blindma1den/Programming-Skills-Level1
 )
 - Create a Player Review system
-- Create travel agency program
+- Create a travel agency program
+- Create an appointment program for a hospital
