@@ -421,6 +421,8 @@ const users = [
     },
 ];
 
+const allReservations = [];
+
 let currentUser = {};
 
 const s = p.spinner();
@@ -464,6 +466,10 @@ const loginUser = async () => {
     return false;
 }
 
+const logout = () => {
+    p.outro(color.cyan('Vuelve pronto :)'));
+}
+
 const hotelMenu = async () => {
     
     const basicOptions = [
@@ -481,6 +487,7 @@ const hotelMenu = async () => {
     switch(action){
         case 'create': create(); break;
         case 'show': show(); break;
+        case 'logout': logout(); break;
         default: p.cancel('La opción seleccionada no está disponible'); shippingMenu(); break;
     }
 }
@@ -557,17 +564,28 @@ const create = async () => {
         return;
     }
     
-    currentUser.reservations.push(
-        {
-            country: countryOptions[countryIdx].name,
-            city: cityOptions[cityIdx].city,
-            room: roomOptions[roomIdx].type,
-            nights: numberNights,
-            totalPrice: numberNights * roomOptions[roomIdx].price_per_night
-        }
-    );
+    const userData = await p.group({
+        name: () => p.text({ message: 'Nombre: ' }), 
+        passport: () => p.text({ message: 'Pasaporte: ' })
+    });
+    
+    const reservationData = {
+        country: countryOptions[countryIdx].name,
+        city: cityOptions[cityIdx].city,
+        room: roomOptions[roomIdx].type,
+        nights: numberNights,
+        totalPrice: numberNights * roomOptions[roomIdx].price_per_night,
+        ...userData,
+        username: currentUser.user
+    }
+    
+    currentUser.reservations.push(reservationData);
     
     hotels[countryIdx].hotels[cityIdx].rooms[roomIdx].available --;
+    
+    allReservations.push({
+        ...reservationData,
+    })
 
     p.note('Reservacion hecha exitosamente', 'Confirmacion');
     hotelMenu();
@@ -583,6 +601,8 @@ const show = async () => {
             message += `\nHabitacion: ${res.room}`;
             message += `\nNoches: ${res.nights}`;
             message += `\nTotal: ${res.totalPrice}`;
+            message += `\nTitular: ${res.name} alias ${res.username} `;
+            message += `\nPasaporte: ${res.passport}`;
             if(idx + 1 === currentUser.reservations.length) return;
             message += '\n---------------------------';
         })
