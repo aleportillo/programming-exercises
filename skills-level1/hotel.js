@@ -408,10 +408,60 @@ const hotels = [
     }
 ];
 
+const users = [
+    {
+        user: 'user1',
+        password: '1234567',
+        reservations: []
+    },
+    {
+        user: 'user2',
+        password: '1234567',
+        reservations: []
+    },
+];
+
+let currentUser = {};
+
+const s = p.spinner();
+
 export const mainHotel = async () => {
     p.intro(`${color.cyan('◈ Bienvenido a RH Hotels ◈')}`);
+    
+    const isUserExists = await loginUser();
+    
+    if(!isUserExists) return;
 
     hotelMenu();
+}
+
+const loginUser = async () => {
+
+    p.intro('Ingresa las credenciales para acceder al sistema');
+
+    let intents = 0;
+
+    while (intents < 3){
+        const group = await p.group({
+            user: () => p.text({ message: 'Usuario: ' }), 
+            password: () => p.text({ message: 'Contraseña: ' })
+        });
+        
+        s.start('Verificando credenciales'); 
+        
+        currentUser = users.find(u => u.user === group.user && u.password === group.password) || {};
+        
+        if(Object.keys(currentUser).length){
+            s.stop('Verificación exitosa!');
+            return true;
+        } else {
+            intents ++;
+            s.stop('Credenciales incorrectas intenta nuevamente');
+        }
+    }
+    
+    p.cancel('El sistema se ha bloqueado por seguridad, contacta a un administrador')
+    return false;
 }
 
 const hotelMenu = async () => {
@@ -430,54 +480,49 @@ const hotelMenu = async () => {
     
     switch(action){
         case 'create': create(); break;
-        // case 'top': top(); break;
-        // case 'compare': compare(); break;
-        // case 'close': logout(); break;
+        case 'show': show(); break;
         default: p.cancel('La opción seleccionada no está disponible'); shippingMenu(); break;
     }
 }
 
 const create = async () => {
 
-    const countryOptions = hotels.map(country => { return {
+    const countryOptions = hotels.map((country, idx) => { return {
         ...country,
         label: country.name,
-        value: country 
+        value: idx, 
     }});
     
-    const country = await p.select({
+    const countryIdx = await p.select({
         message: 'En que pais quieres reservar?',
         options: countryOptions,
     });
-
-    // console.log(country.hotels);
     
-    const cityOptions = country.hotels.map(city => { return {
+    const cityOptions = countryOptions[countryIdx].hotels.map((city, idx) => { return {
         ...city,
         label: city.city,
-        value: city 
+        value: idx,
     }});
     
-    const city = await p.select({
+    const cityIdx = await p.select({
         message: 'En que ciudad quieres reservar?',
         options: cityOptions,
     });
     
-    const roomOptions = city.rooms.map(room => { return {
+    const roomOptions = cityOptions[cityIdx].rooms.map((room, idx) => { return {
         ...room,
         label: room.type,
-        value: room 
+        value: idx,
     }});
     
-    const room = await p.select({
+    const roomIdx = await p.select({
         message: 'Que tipo de habitacion desea?',
         options: roomOptions,
     });
     
-    // console.log(room);
-    
-    if(room.available === 0) {
-        console.log('Oops');
+    if(roomOptions[roomIdx].available === 0) {
+        p.note('No hay habitaciones disponibles', 'Oops');
+        hotelMenu();  
         return;
     }
     
@@ -491,10 +536,10 @@ const create = async () => {
     });
     
     let message = `Datos de la reservacion:`;
-    message += `\nLugar: ${country.name}, ${city.city}`;
-    message += `\nHabitacionn: ${room.type}`;
+    message += `\nLugar: ${countryOptions[countryIdx].name}, ${cityOptions[cityIdx].city}`;
+    message += `\nHabitacionn: ${roomOptions[roomIdx].type}`;
     message += `\nNoches: ${numberNights}`;
-    message += `\nTotal: ${numberNights * room.price_per_night}`;
+    message += `\nTotal: ${numberNights * roomOptions[roomIdx].price_per_night}`;
     
     p.note(message, 'Resume');
     
@@ -507,8 +552,43 @@ const create = async () => {
     });
     
     if(!isUserAgree){
+        p.note('Reservacion cancelada', 'Confirmacion');
         hotelMenu();
         return;
     }
     
+    currentUser.reservations.push(
+        {
+            country: countryOptions[countryIdx].name,
+            city: cityOptions[cityIdx].city,
+            room: roomOptions[roomIdx].type,
+            nights: numberNights,
+            totalPrice: numberNights * roomOptions[roomIdx].price_per_night
+        }
+    );
+    
+    hotels[countryIdx].hotels[cityIdx].rooms[roomIdx].available --;
+
+    p.note('Reservacion hecha exitosamente', 'Confirmacion');
+    hotelMenu();
+}
+
+const show = async () => {
+    
+    let message = `Total de reservaciones: ${currentUser.reservations.length}\n`;
+    
+    if(currentUser.reservations.length !== 0){
+        currentUser.reservations.forEach((res, idx) =>{
+            message += `\nLugar: ${res.country}, ${res.city}`;
+            message += `\nHabitacion: ${res.room}`;
+            message += `\nNoches: ${res.nights}`;
+            message += `\nTotal: ${res.totalPrice}`;
+            if(idx + 1 === currentUser.reservations.length) return;
+            message += '\n---------------------------';
+        })
+    }
+    
+    p.note(message, 'Resume');
+    
+    hotelMenu();    
 }
