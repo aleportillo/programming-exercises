@@ -1,6 +1,7 @@
 import { mainPlayer } from "./playerReview.js";
 import { mainTravel } from "./agencyProgram.js";
 import { mainHospital } from "./appointmentsHospital.js";
+import { mainHotel } from "./hotel.js";
 
 // General functions
 export const sleep = (ms) => {
@@ -12,7 +13,8 @@ export const sleep = (ms) => {
 const main = () => {
     // mainPlayer();
     // mainTravel();
-    mainHospital();
+    // mainHospital();
+    mainHotel();
 }
 
 main();
