@@ -21,3 +21,6 @@ https://github.com/blindma1den/Programming-Skills-Level1
 - Create an appointment program for a hospital
 - Create a booking algorithm
 - Create an airplane program
+
+🍄 **Level 1:** entry level [exercises](https://github.com/blindma1den/Programming-Skills-Level2)
+- Random points system
