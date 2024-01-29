@@ -13,7 +13,6 @@ https://github.com/blindma1den/Programming-Skills-Level1
 - Create an online shipping system 
 - Develop a finance management application
 <br/>
-<br/>
 
 🍄 **Level 1:** entry level [exercises](https://github.com/blindma1den/Programming-Skills-Level1)
 - Create a Player Review system
@@ -21,7 +20,8 @@ https://github.com/blindma1den/Programming-Skills-Level1
 - Create an appointment program for a hospital
 - Create a booking algorithm
 - Create an airplane program
-
-🍄 **Level 1:** entry level [exercises](https://github.com/blindma1den/Programming-Skills-Level2)
+  
+<br/>
+🍄 **Level 2:** entry level [exercises](https://github.com/blindma1den/Programming-Skills-Level2)
 - Random points system
 - Lottery system
