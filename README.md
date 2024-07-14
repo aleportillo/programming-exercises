@@ -2,8 +2,6 @@
 
 ⭐ Solution to the exercises of @bridma1den with different levels of difficulty
 
-https://github.com/blindma1den/Programming-Skills-Level1
-
 ## Content
 
 🍄 **Level 0:** entry level [exercises](https://github.com/blindma1den/Programming-Skills-Level0)
@@ -25,3 +23,4 @@ https://github.com/blindma1den/Programming-Skills-Level1
 🍄 **Level 2:** entry level [exercises](https://github.com/blindma1den/Programming-Skills-Level2)
 - Random points system
 - Lottery system
+- CRUD : Manchester United FC Player Management System

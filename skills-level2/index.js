@@ -1,5 +1,6 @@
 import { mainLottery } from "./lottery.js";
 import { mainPoints } from "./points.js";
+import { mainPlayer } from "./crud.js";
 
 // General functions
 export const sleep = (ms) => {
@@ -8,7 +9,8 @@ export const sleep = (ms) => {
 
 const main = () => {
     // mainPoints();
-    mainLottery();
+    // mainLottery();
+    mainPlayer();
 }
 
 main();
